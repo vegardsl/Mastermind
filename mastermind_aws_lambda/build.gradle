@@ -13,5 +13,15 @@ dependencies {
     implementation 'com.amazonaws:aws-lambda-java-log4j2:1.0.0'
 }
 
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+build.dependsOn buildZip
+
 sourceCompatibility = "7"
 targetCompatibility = "7"
