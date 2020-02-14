@@ -1,2 +1,2 @@
-include ':app', ':mastermind_core', ':mastermind_aws_lambda'
+include ':app', ':mastermind_core', ':mastermind_aws_lambda', ':lambda_newgame'
 rootProject.name='Mastermind'
