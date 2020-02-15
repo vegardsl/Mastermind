@@ -1,5 +1,7 @@
 package com.stjerna.mastermind.core
 
+import java.io.Serializable
+
 sealed class Try<out T> {
     abstract fun isSuccess(): Boolean
     abstract fun isFailure(): Boolean
@@ -14,3 +16,5 @@ data class Failure<out T>(val e: Throwable) : Try<T>() {
     override fun isSuccess(): Boolean = false
     override fun isFailure(): Boolean = true
 }
+
+data class MyPair<F, S>(val first: F, val second: S): Serializable

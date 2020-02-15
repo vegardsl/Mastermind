@@ -11,20 +11,20 @@ import org.junit.Test
 import org.junit.jupiter.api.fail
 import java.io.IOException
 
-internal class GuessTest {
+internal class GuessInteractorTest {
     @Test
     fun createGuess() {
-        Guess(FakeGameGateway())
+        GuessInteractor(FakeGameGateway())
     }
 
     @Test
     fun invokeGuess() {
-        Guess(FakeGameGateway()).execute(gameID = "GameID", guess = "CODE")
+        GuessInteractor(FakeGameGateway()).execute(gameID = "GameID", guess = "CODE")
     }
 
     @Test
     fun gameNotFound() {
-        when (val result = Guess(FakeGameGateway()).execute("GameID", guess = "CODE")) {
+        when (val result = GuessInteractor(FakeGameGateway()).execute("GameID", guess = "CODE")) {
             is Failure -> assertTrue(result.e is IOException)
             is Success -> fail("Expected a failure.")
         }
@@ -36,7 +36,7 @@ internal class GuessTest {
 
         val storage = FakeGameGateway(MastermindGame(testGameID, "ABCD", false))
 
-        when (val result = Guess(storage).execute(gameID = testGameID, guess = "CODE")) {
+        when (val result = GuessInteractor(storage).execute(gameID = testGameID, guess = "CODE")) {
             is Failure -> fail(result.e)
             is Success -> {
                 assertEquals(1, result.value.guesses.size)
@@ -48,7 +48,7 @@ internal class GuessTest {
     fun updatedGameIsStored() {
         val testGameID = "GameID"
         val storage = FakeGameGateway(MastermindGame(testGameID, "ABCD", false))
-        val result = Guess(storage).execute(gameID = testGameID, guess = "CODE")
+        val result = GuessInteractor(storage).execute(gameID = testGameID, guess = "CODE")
         assertTrue(result is Success)
         assertTrue(storage.putWasCalled)
     }
@@ -58,7 +58,7 @@ internal class GuessTest {
         val testGameID = "GameID"
         val storage = FakeGameGateway(MastermindGame(testGameID, "ABCD", false))
         storage.putShallFail = true
-        val result = Guess(storage).execute(gameID = testGameID, guess = "CODE")
+        val result = GuessInteractor(storage).execute(gameID = testGameID, guess = "CODE")
         assertTrue(result is Failure)
         assertTrue(storage.putWasCalled)
     }

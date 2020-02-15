@@ -1,13 +1,15 @@
 package com.stjerna.mastermind.core.usecase
 
 import com.stjerna.mastermind.core.Failure
+import com.stjerna.mastermind.core.MyPair
 import com.stjerna.mastermind.core.Success
 import com.stjerna.mastermind.core.Try
 import com.stjerna.mastermind.core.entity.GameGateway
 import com.stjerna.mastermind.core.entity.MastermindGame
+import com.stjerna.mastermind.core.usecase.score.CodeScorer
 import com.stjerna.mastermind.core.usecase.score.Score
 
-class Guess(private val storage: GameGateway) {
+class GuessInteractor(private val storage: GameGateway) {
     fun execute(gameID: String, guess: String): Try<MastermindGame> {
         return when (val result = storage.get(gameID)) {
             is Success -> scoreGuessAndUpdate(guess, result.value)
@@ -19,7 +21,7 @@ class Guess(private val storage: GameGateway) {
         guess: String,
         game: MastermindGame
     ): Try<MastermindGame> {
-        game.guesses.add(Pair(guess, Score(0, 0)))
+        game.guesses.add(MyPair(guess, CodeScorer(game.code, guess).score))
         return when(val result = storage.put(game)) {
             is Success -> Success(game)
             is Failure -> Failure(result.e)

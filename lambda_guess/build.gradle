@@ -6,8 +6,18 @@ dependencies {
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.0'
     implementation 'com.amazonaws:aws-lambda-java-events:2.2.7'
     implementation 'com.amazonaws:aws-lambda-java-log4j2:1.0.0'
-    compile project(path: ':mastermind_core')
+    implementation project(path: ':mastermind_core')
 }
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+build.dependsOn buildZip
 
 sourceCompatibility = "7"
 targetCompatibility = "7"
