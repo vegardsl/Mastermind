@@ -12,6 +12,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 class MastermindApiTest {
@@ -37,12 +40,36 @@ class MastermindApiTest {
             assertTrue(response.isSuccessful)
         }
     }
+
+    @Test
+    fun apiIntegrationTest() {
+        runBlocking {
+            val response1 = api.newGame()
+            assertTrue(response1.isSuccessful)
+
+            val response2 = api.guess(
+                response1.body()!!,
+                "AAAF")
+            assertTrue(response2.isSuccessful)
+        }
+    }
 }
 
 interface MastermindApi {
-    @GET("dev/mastermind/new-game")
-    suspend fun newGame(): Response<ResponseBody>
+    @GET("mastermind/newgame")
+    suspend fun newGame(): Response<String>
+
+    @POST("mastermind/guess/{gameid}")
+    suspend fun guess(
+        @Path("gameid") gameid: String,
+        @Query("guess") guess: String
+    ): Response<GuessResponse>
 }
+
+data class GuessResponse(
+    val correctColors: String,
+    val correctPositions: String,
+    val isFinished: Boolean = false)
 
 class MyInterceptor(
     private val hostUrl: String,

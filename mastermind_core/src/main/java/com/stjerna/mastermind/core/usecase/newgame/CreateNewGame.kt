@@ -9,10 +9,15 @@ import java.util.*
 
 class CreateNewGame(private val storage: GameGateway) {
     fun execute(): Try<MastermindGame> {
-        return when (val result = storage.create(UUID.randomUUID().toString(), "ABCD")) {
+        return when (val result = createGameInStorage()) {
             is Success -> Success(result.value)
             is Failure -> Failure(result.e)
         }
     }
+
+    private fun createGameInStorage() = storage.create(
+        UUID.randomUUID().toString(),
+        CodeGenerator().generatedCode
+    )
 
 }
