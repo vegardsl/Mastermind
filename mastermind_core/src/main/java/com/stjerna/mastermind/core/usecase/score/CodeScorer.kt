@@ -2,6 +2,8 @@ package com.stjerna.mastermind.core.usecase.score
 
 class CodeScorer(code: String, guess: String) {
 
+    val score: Score
+
     init {
         require(code.length == GameRuleSet.codeSize)
         require(guess.length == GameRuleSet.codeSize)
@@ -15,8 +17,14 @@ class CodeScorer(code: String, guess: String) {
         guessList.forEach { guessSymbol ->
             require(GameRuleSet.symbolList.contains(guessSymbol))
         }
+
+        var correctSymbols = 0
+        guessList.forEach {
+            if (codeList.contains(it)) correctSymbols++
+        }
+
+        score = Score(0, correctSymbols)
     }
 
-    val score: Score =
-        Score(0, 0)
+
 }

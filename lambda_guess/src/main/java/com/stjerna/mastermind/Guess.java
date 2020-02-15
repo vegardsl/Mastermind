@@ -32,7 +32,7 @@ public class Guess implements RequestHandler<GuessRequest, LambdaResponse> {
         GuessResponse guessResponse = new GuessResponse();
         ArrayList<MyPair<String, Score>> guesses = game.getGuesses();
         Score score = guesses.get(guesses.size() - 1).getSecond();
-        guessResponse.setCorrectColors(Integer.toString(score.getCorrectColors()));
+        guessResponse.setCorrectColors(Integer.toString(score.getCorrectSymbol()));
         guessResponse.setCorrectPositions(Integer.toString(score.getCorrectPositions()));
         guessResponse.setFinished(game.isFinished());
         return guessResponse;

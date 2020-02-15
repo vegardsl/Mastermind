@@ -14,7 +14,7 @@ public class NewGame implements RequestHandler<String, String> {
                 Locale.getDefault(),
                 "Hello %s. Your score is : %d",
                 name,
-                score.getCorrectColors()
+                score.getCorrectSymbol()
         );
     }
 }

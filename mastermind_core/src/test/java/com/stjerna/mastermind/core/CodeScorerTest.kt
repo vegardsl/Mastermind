@@ -16,6 +16,14 @@ internal class CodeScorerTest {
         }
     }
 
+    private fun assertScoreIsCorrect(
+        correctPosition: Int, correctSymbol: Int,
+        code: String, guess: String
+    ) {
+        val score: Score = CodeScorer(code, guess).score
+        assertEquals(Score(correctPosition, correctSymbol), score)
+    }
+
     @Test
     fun createScorer_illegalArguments() {
         assertIllegalArgumentExceptionIsThrown("", "")
@@ -36,7 +44,16 @@ internal class CodeScorerTest {
     }
 
     @Test
-    fun getScore() {
-        //val score: Score = CodeScorer("", "").score
+    fun getScore_noMatches() {
+        val score: Score = CodeScorer("ABCD", "EEEE").score
+        assertEquals(Score(0, 0), score)
+    }
+
+    @Test
+    fun getScore_correctSymbol_wrongPosition() {
+        assertScoreIsCorrect(correctPosition = 0, correctSymbol = 1, code = "ABCD", guess = "EEEA")
+        assertScoreIsCorrect(correctPosition = 0, correctSymbol = 1, code = "ABCD", guess = "EEAE")
+        assertScoreIsCorrect(correctPosition = 0, correctSymbol = 2, code = "ABCD", guess = "EAEB")
+        assertScoreIsCorrect(correctPosition = 0, correctSymbol = 4, code = "ABCD", guess = "DCBA")
     }
 }

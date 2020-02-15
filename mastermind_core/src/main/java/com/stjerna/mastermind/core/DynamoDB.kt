@@ -67,7 +67,7 @@ class DynamoDbGateway : GameGateway {
                 listOf(
                     it.first,
                     it.second.correctPositions.toString(),
-                    it.second.correctColors.toString()
+                    it.second.correctSymbol.toString()
                 )
             )
         }
