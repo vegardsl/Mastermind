@@ -8,29 +8,16 @@ import com.stjerna.mastermind.core.entity.StubbedGameGateway
 import org.junit.Assert.*
 import org.junit.Test
 
-internal class CreateNewGameTest : NewGamePresenter {
-
-    var newGameResult: Try<MastermindGame>? = null
-
-    override fun present(result: Try<MastermindGame>) {
-        newGameResult = result
-    }
+internal class CreateNewGameTest {
 
     @Test
     fun initializeClass() {
-        CreateNewGame(this, FakeGameGateway())
-    }
-
-    @Test
-    fun createNewGame_resultIsCalled() {
-        CreateNewGame(this, FakeGameGateway()).execute()
-        assertNotNull(newGameResult)
+        CreateNewGame(FakeGameGateway())
     }
 
     @Test
     fun createGame_returnsInitialGame() {
-        CreateNewGame(this, FakeGameGateway()).execute()
-        when (val result = newGameResult) {
+        when (val result = CreateNewGame(FakeGameGateway()).execute()) {
             is Success -> assertTrue(result.value.guesses.isEmpty())
             is Failure -> fail()
         }
@@ -39,7 +26,7 @@ internal class CreateNewGameTest : NewGamePresenter {
     @Test
     fun createGame_callsTheGameGateway() {
         val storage = FakeGameGateway()
-        CreateNewGame(this, storage).execute()
+        CreateNewGame(storage).execute()
         assertTrue(storage.createWasCalled)
     }
 }
@@ -48,8 +35,8 @@ class FakeGameGateway : StubbedGameGateway() {
 
     var createWasCalled = false
 
-    override fun create(gameID: String, result: (Try<MastermindGame>) -> Unit) {
+    override fun create(gameID: String, code: String): Try<MastermindGame> {
         createWasCalled = true
-        result.invoke(Success(MastermindGame(("123"))))
+        return Success(MastermindGame(gameID, code, false))
     }
 }

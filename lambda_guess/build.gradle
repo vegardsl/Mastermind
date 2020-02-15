@@ -1,29 +1,13 @@
 apply plugin: 'java-library'
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':mastermind_core')
 
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.0'
     implementation 'com.amazonaws:aws-lambda-java-events:2.2.7'
     implementation 'com.amazonaws:aws-lambda-java-log4j2:1.0.0'
-    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.723'
+    compile project(path: ':mastermind_core')
 }
-
-task buildZip(type: Zip) {
-    from compileJava
-    from processResources
-    into('lib') {
-        from configurations.runtimeClasspath
-    }
-}
-
-build.dependsOn buildZip
-
 
 sourceCompatibility = "7"
 targetCompatibility = "7"
