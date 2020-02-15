@@ -56,4 +56,12 @@ internal class CodeScorerTest {
         assertScoreIsCorrect(correctPosition = 0, correctSymbol = 2, code = "ABCD", guess = "EAEB")
         assertScoreIsCorrect(correctPosition = 0, correctSymbol = 4, code = "ABCD", guess = "DCBA")
     }
+
+    @Test
+    fun getScore_correctPosition() {
+        assertScoreIsCorrect(correctPosition = 1, correctSymbol = 0, code = "ABCD", guess = "AEEE")
+        assertScoreIsCorrect(correctPosition = 2, correctSymbol = 2, code = "DCBA", guess = "DCAB")
+        assertScoreIsCorrect(correctPosition = 4, correctSymbol = 0, code = "DCBA", guess = "DCBA")
+        assertScoreIsCorrect(correctPosition = 1, correctSymbol = 1, code = "FEDC", guess = "ABCC")
+    }
 }

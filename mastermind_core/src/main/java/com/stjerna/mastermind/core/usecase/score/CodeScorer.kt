@@ -19,11 +19,15 @@ class CodeScorer(code: String, guess: String) {
         }
 
         var correctSymbols = 0
-        guessList.forEach {
-            if (codeList.contains(it)) correctSymbols++
+        var correctPositions = 0
+
+        for (i in guessList.indices) {
+            val guessSymbol = guessList[i]
+            if (codeList.contains(guessSymbol)) correctSymbols++
+            if (codeList[i] == guessSymbol) correctPositions++
         }
 
-        score = Score(0, correctSymbols)
+        score = Score(correctPositions, correctSymbols - correctPositions)
     }
 
 
