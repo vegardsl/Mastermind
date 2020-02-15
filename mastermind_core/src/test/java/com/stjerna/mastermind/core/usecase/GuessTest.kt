@@ -31,17 +31,36 @@ internal class GuessTest {
     }
 
     @Test
-    fun guessIsUpdated() {
+    fun guessListIsUpdated() {
         val testGameID = "GameID"
 
         val storage = FakeGameGateway(MastermindGame(testGameID, "ABCD", false))
 
         when (val result = Guess(storage).execute(gameID = testGameID, guess = "CODE")) {
-            is Failure -> fail(result.e) // assertTrue(result.e is IOException)
+            is Failure -> fail(result.e)
             is Success -> {
                 assertEquals(1, result.value.guesses.size)
             }
         }
+    }
+
+    @Test
+    fun updatedGameIsStored() {
+        val testGameID = "GameID"
+        val storage = FakeGameGateway(MastermindGame(testGameID, "ABCD", false))
+        val result = Guess(storage).execute(gameID = testGameID, guess = "CODE")
+        assertTrue(result is Success)
+        assertTrue(storage.putWasCalled)
+    }
+
+    @Test
+    fun errorsWhenStoringAreCaught() {
+        val testGameID = "GameID"
+        val storage = FakeGameGateway(MastermindGame(testGameID, "ABCD", false))
+        storage.putShallFail = true
+        val result = Guess(storage).execute(gameID = testGameID, guess = "CODE")
+        assertTrue(result is Failure)
+        assertTrue(storage.putWasCalled)
     }
 }
 
@@ -49,8 +68,13 @@ class FakeGameGateway(
     private val gameToReturn: MastermindGame? = null
 ) : StubbedGameGateway() {
 
+    var putShallFail = false
+    var putWasCalled = false
+
     override fun put(game: MastermindGame): Try<Unit> {
-        return Success(Unit)
+        putWasCalled = true
+        return if (putShallFail) Failure(IOException(""))
+        else Success(Unit)
     }
 
     override fun get(gameID: String): Try<MastermindGame> {

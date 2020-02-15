@@ -20,7 +20,10 @@ class Guess(private val storage: GameGateway) {
         game: MastermindGame
     ): Try<MastermindGame> {
         game.guesses.add(Pair(guess, Score(0, 0)))
-        return Success(game)
+        return when(val result = storage.put(game)) {
+            is Success -> Success(game)
+            is Failure -> Failure(result.e)
+        }
     }
 
 }
