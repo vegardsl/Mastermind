@@ -64,4 +64,11 @@ internal class CodeScorerTest {
         assertScoreIsCorrect(correctPosition = 4, correctSymbol = 0, code = "DCBA", guess = "DCBA")
         assertScoreIsCorrect(correctPosition = 1, correctSymbol = 1, code = "FEDC", guess = "ABCC")
     }
+
+    @Test
+    fun isPerfectScore() {
+        assertTrue(CodeScorer("DCBA", "DCBA").isPerfectScore)
+        assertFalse(CodeScorer("ABCD", "DCBA").isPerfectScore)
+        assertFalse(CodeScorer("ABCD", "EEEA").isPerfectScore)
+    }
 }

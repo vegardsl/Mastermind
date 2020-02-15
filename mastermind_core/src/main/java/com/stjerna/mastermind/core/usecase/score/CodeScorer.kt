@@ -2,6 +2,7 @@ package com.stjerna.mastermind.core.usecase.score
 
 class CodeScorer(code: String, guess: String) {
 
+    val isPerfectScore: Boolean
     val score: Score
 
     init {
@@ -28,6 +29,7 @@ class CodeScorer(code: String, guess: String) {
         }
 
         score = Score(correctPositions, correctSymbols - correctPositions)
+        isPerfectScore = correctPositions == GameRuleSet.codeSize
     }
 
 

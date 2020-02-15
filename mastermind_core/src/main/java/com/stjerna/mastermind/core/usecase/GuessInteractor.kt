@@ -21,7 +21,9 @@ class GuessInteractor(private val storage: GameGateway) {
         guess: String,
         game: MastermindGame
     ): Try<MastermindGame> {
-        game.guesses.add(MyPair(guess, CodeScorer(game.code, guess).score))
+        val codeScorer = CodeScorer(game.code, guess)
+        game.guesses.add(MyPair(guess, codeScorer.score))
+        game.isFinished = codeScorer.isPerfectScore
         return when(val result = storage.put(game)) {
             is Success -> Success(game)
             is Failure -> Failure(result.e)
