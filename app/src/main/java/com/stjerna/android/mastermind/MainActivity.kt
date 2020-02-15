@@ -2,7 +2,7 @@ package com.stjerna.android.mastermind
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.stjerna.mastermind.core.CodeScorer
+import com.stjerna.mastermind.core.usecase.score.CodeScorer
 
 class MainActivity : AppCompatActivity() {
     val scorer = CodeScorer("", "")

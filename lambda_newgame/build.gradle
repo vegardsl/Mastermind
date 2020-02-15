@@ -8,9 +8,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':mastermind_core')
 
+
+    // implementation 'com.amazonaws:aws-java-sdk-core:1.11.723'
+    // implementation 'com.amazonaws:aws-java-sdk-lambda:1.11.723'
+    // implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.723'
+
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.0'
     implementation 'com.amazonaws:aws-lambda-java-events:2.2.7'
     implementation 'com.amazonaws:aws-lambda-java-log4j2:1.0.0'
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.723'
 }
 
 task buildZip(type: Zip) {

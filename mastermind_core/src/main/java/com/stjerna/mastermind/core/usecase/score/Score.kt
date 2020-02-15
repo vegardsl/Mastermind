@@ -1,3 +1,3 @@
-package com.stjerna.mastermind_core
+package com.stjerna.mastermind.core.usecase.score
 
 data class Score(val correctPositions: Int, val correctColors: Int)

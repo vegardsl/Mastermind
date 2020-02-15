@@ -11,6 +11,8 @@ dependencies {
     testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
     implementation 'junit:junit:4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.723'
 }
 
 test {

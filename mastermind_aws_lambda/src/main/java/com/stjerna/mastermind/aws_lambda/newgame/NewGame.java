@@ -2,8 +2,8 @@ package com.stjerna.mastermind.aws_lambda.newgame;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.stjerna.mastermind.core.CodeScorer;
-import com.stjerna.mastermind_core.Score;
+import com.stjerna.mastermind.core.usecase.score.CodeScorer;
+import com.stjerna.mastermind.core.usecase.score.Score;
 
 import java.util.Locale;
 

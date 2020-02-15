@@ -2,19 +2,24 @@ package com.stjerna.mastermind;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.stjerna.mastermind.core.CodeScorer;
-import com.stjerna.mastermind_core.Score;
+import com.stjerna.mastermind.core.DynamoDbGateway;
+import com.stjerna.mastermind.core.Success;
+import com.stjerna.mastermind.core.Try;
+import com.stjerna.mastermind.core.entity.MastermindGame;
+import com.stjerna.mastermind.core.usecase.newgame.CreateNewGame;
 
-import java.util.Locale;
+public class NewGame implements RequestHandler<Void, String> {
 
-public class NewGame implements RequestHandler<String, String> {
-    public String handleRequest(String name, Context context) {
-        Score score = new CodeScorer("", "").getScore();
-        return String.format(
-                Locale.getDefault(),
-                "Hello %s. Your score is : %d",
-                name,
-                score.getCorrectColors()
-        );
+    public String handleRequest(Void any, Context context) {
+
+        Try<MastermindGame> result = new CreateNewGame(new DynamoDbGateway()).execute();
+
+        if (result instanceof Success) {
+            MastermindGame game = (MastermindGame) ((Success) result).getValue();
+            return game.getId();
+        } else {
+            return "NewGame ERROR";
+        }
+
     }
 }

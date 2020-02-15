@@ -1,8 +1,8 @@
 package com.stjerna.mastermind.core
 
-import com.stjerna.mastermind_core.Score
+import com.stjerna.mastermind.core.usecase.score.CodeScorer
+import com.stjerna.mastermind.core.usecase.score.Score
 import org.junit.Test
-import org.junit.jupiter.api.Assertions.*
 
 internal class CodeScorerTest {
     @Test
