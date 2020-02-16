@@ -5,6 +5,9 @@ class CodeScorer(code: String, guess: String) {
     val isPerfectScore: Boolean
     val score: Score
 
+    val positionsUsed = booleanArrayOf(false, false, false, false)
+    val guessUsed = booleanArrayOf(false, false, false, false)
+
     init {
         require(code.length == GameRuleSet.codeSize)
         require(guess.length == GameRuleSet.codeSize)
@@ -22,13 +25,23 @@ class CodeScorer(code: String, guess: String) {
         var correctSymbols = 0
         var correctPositions = 0
 
-        for (i in guessList.indices) {
-            val guessSymbol = guessList[i]
-            if (codeList.contains(guessSymbol)) correctSymbols++
-            if (codeList[i] == guessSymbol) correctPositions++
+        for (codePos in guessList.indices) {
+            val guessSymbol = guessList[codePos]
+            if (codeList[codePos] == guessSymbol) {
+                positionsUsed[codePos] = true
+                guessUsed[codePos] = true
+                correctPositions++
+            }
+            for (guessPos in codeList.indices) {
+                if (codePos != guessPos && codeList[codePos] == guessList[guessPos] && !positionsUsed[codePos] && !guessUsed[guessPos]) {
+                    positionsUsed[codePos] = true
+                    guessUsed[guessPos] = true
+                    correctSymbols++
+                }
+            }
         }
 
-        score = Score(correctPositions, correctSymbols - correctPositions)
+        score = Score(correctPositions, correctSymbols)
         isPerfectScore = correctPositions == GameRuleSet.codeSize
     }
 

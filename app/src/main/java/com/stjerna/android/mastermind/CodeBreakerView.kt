@@ -3,49 +3,77 @@ package com.stjerna.android.mastermind
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.EditText
+import android.view.animation.CycleInterpolator
 import android.widget.LinearLayout
-import android.widget.Toast
-import kotlinx.android.synthetic.main.code_breaker_layout.*
+import com.stjerna.mastermind.core.usecase.score.GameRuleSet
 import kotlinx.android.synthetic.main.code_breaker_layout.view.*
 
 class CodeBreakerView(context: Context, attributeSet: AttributeSet)
     : LinearLayout(context, attributeSet) {
+
+    var onSentListener: ((String) -> Unit)? = null
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.code_breaker_layout, this)
 
         a_button.setOnClickListener {
-            val currentText = code_guess_editText.text.toString()
-            code_guess_editText.setText("${currentText}A")
+            addCharOrShake("A")
         }
         b_button.setOnClickListener {
-            val currentText = code_guess_editText.text.toString()
-            code_guess_editText.setText("${currentText}B")
+            addCharOrShake("B")
         }
         c_button.setOnClickListener {
-            val currentText = code_guess_editText.text.toString()
-            code_guess_editText.setText("${currentText}C")
+            addCharOrShake("C")
         }
         d_button.setOnClickListener {
-            val currentText = code_guess_editText.text.toString()
-            code_guess_editText.setText("${currentText}D")
+            addCharOrShake("D")
         }
         e_button.setOnClickListener {
-            val currentText = code_guess_editText.text.toString()
-            code_guess_editText.setText("${currentText}E")
+            addCharOrShake("E")
         }
         f_button.setOnClickListener {
-            val currentText = code_guess_editText.text.toString()
-            code_guess_editText.setText("${currentText}F")
+            addCharOrShake("F")
         }
         undo_button.setOnClickListener {
             val currentText = code_guess_editText.text.toString()
-            code_guess_editText.setText(currentText.dropLast(1))
+            if (currentText.isBlank()) {
+                shakeEditText()
+            } else {
+                code_guess_editText.setText(currentText.dropLast(1))
+            }
+            send_button.isEnabled = false
         }
         send_button.setOnClickListener {
-            Toast.makeText(context, "SEND", Toast.LENGTH_SHORT).show()
+            onSentListener?.invoke(code_guess_editText.text.toString())
         }
+    }
+
+    private fun addCharOrShake(s: String) {
+        val currentText = code_guess_editText.text.toString()
+        if (currentText.length >= GameRuleSet.codeSize) {
+            shakeEditText()
+        } else {
+            addCharacter(s)
+        }
+    }
+
+    private fun addCharacter(char: String) {
+        val currentText = code_guess_editText.text.toString()
+        val newText = "${currentText}$char"
+        code_guess_editText.setText(newText)
+        if (newText.length == GameRuleSet.codeSize) send_button.isEnabled = true
+    }
+
+    private fun shakeEditText() {
+        code_guess_editText.animate()
+            .setInterpolator(CycleInterpolator(3f))
+            .translationX(5f)
+            .setDuration(600L)
+            .start()
+    }
+
+    fun setOnSendListener(listener: (String) -> Unit) {
+        this.onSentListener = listener
     }
 }

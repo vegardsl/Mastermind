@@ -8,10 +8,13 @@ import com.stjerna.mastermind.core.usecase.score.Score
 class CodeGuessListAdapter : RecyclerView.Adapter<CodeGuessListAdapter.ViewHolder>() {
 
     private var attempts = mutableListOf<GuessResponse>()
-    set(value) {
-        value.sortBy { it.attemptNumber }
-        field = value
+
+    fun addAttempt(guess: GuessResponse) {
+        attempts.add(guess)
+        attempts.sortBy { it.attemptNumber }
+        notifyDataSetChanged()
     }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

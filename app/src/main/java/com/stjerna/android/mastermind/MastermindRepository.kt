@@ -52,7 +52,25 @@ class MastermindRepository : MastermindUseCases {
     }
 
     override fun makeGuess(gameID: GameID, guess: String, result: (Try<GuessResponse>) -> Unit) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        GlobalScope.launch {
+            val response = runBlocking { api.guess(gameID, guess) }
+            if (response.isSuccessful) {
+                response.body()?.let { guessResponse ->
+                    result.invoke(Success(guessResponse))
+                } ?: result.invoke(
+                    Failure(
+                        IllegalStateException("An error occurred while guessing the code.")
+                    )
+                )
+            } else {
+                Log.e(TAG, "${response.errorBody()}")
+                result.invoke(
+                    Failure(
+                        IllegalStateException("An error occurred while guessing the code. ${response.errorBody()}.")
+                    )
+                )
+            }
+        }
     }
 
     val api = APIProvider.api()
