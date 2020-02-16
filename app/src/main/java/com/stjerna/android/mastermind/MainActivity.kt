@@ -15,9 +15,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val scoreView: ScoreView = findViewById(R.id.scoreView)
-        scoreView.setGuess("ABCD")
-        scoreView.setScore(Score(1,2))
+        // val scoreView: ScoreView = findViewById(R.id.scoreView)
+        // scoreView.setGuess("ABCD")
+        // scoreView.setScore(Score(1,2))
 
         code_guess_list.itemAnimator = null
         code_guess_list.layoutManager = LinearLayoutManager(
