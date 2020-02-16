@@ -32,17 +32,22 @@ public class Guess implements RequestHandler<GuessRequest, LambdaResponse> {
         GuessResponse guessResponse = new GuessResponse();
         ArrayList<MyPair<String, Score>> guesses = game.getGuesses();
         Score score = guesses.get(guesses.size() - 1).getSecond();
+        String guess = guesses.get(guesses.size() - 1).getFirst();
         guessResponse.setCorrectColors(Integer.toString(score.getCorrectSymbol()));
         guessResponse.setCorrectPositions(Integer.toString(score.getCorrectPositions()));
         guessResponse.setFinished(game.isFinished());
+        guessResponse.setGuess(guess);
+        guessResponse.setAttemptNumber(guesses.size());
         return guessResponse;
     }
 }
 
 class GuessResponse implements LambdaResponse {
+    String guess;
     String correctColors;
     String correctPositions;
     boolean isFinished;
+    private int attemptNumber;
 
     public String getCorrectColors() {
         return correctColors;
@@ -66,6 +71,22 @@ class GuessResponse implements LambdaResponse {
 
     public void setFinished(boolean finished) {
         isFinished = finished;
+    }
+
+    public void setGuess(String guess) {
+        this.guess = guess;
+    }
+
+    public String getGuess() {
+        return guess;
+    }
+
+    public void setAttemptNumber(int attemptNumber) {
+        this.attemptNumber = attemptNumber;
+    }
+
+    public int getAttemptNumber() {
+        return attemptNumber;
     }
 }
 

@@ -61,4 +61,5 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.3'
 
     implementation project(':mastermind_core')
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

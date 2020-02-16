@@ -19,6 +19,8 @@ interface MastermindApi {
 }
 
 data class GuessResponse(
+    val guess: String,
+    val attemptNumber: Int,
     val correctColors: String,
     val correctPositions: String,
     val isFinished: Boolean = false)

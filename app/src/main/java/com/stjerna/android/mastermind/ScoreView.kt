@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.stjerna.mastermind.core.usecase.score.Score
 
-class ScoreView(context: Context, attributeSet: AttributeSet) :
+class ScoreView(context: Context, attributeSet: AttributeSet? = null) :
     LinearLayout(context, attributeSet) {
 
     private val scoreItemList: List<View>
@@ -29,8 +29,6 @@ class ScoreView(context: Context, attributeSet: AttributeSet) :
 
         guessText = view.findViewById(R.id.guess_textView)
     }
-
-
 
     fun setGuess(guess: String) {
         guessText.text = guess
