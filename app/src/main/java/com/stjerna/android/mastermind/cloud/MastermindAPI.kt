@@ -23,7 +23,7 @@ data class GuessResponse(
     val attemptNumber: Int,
     val correctColors: String,
     val correctPositions: String,
-    val isFinished: Boolean = false)
+    val finished: Boolean)
 
 class MyInterceptor(
     private val hostUrl: String,

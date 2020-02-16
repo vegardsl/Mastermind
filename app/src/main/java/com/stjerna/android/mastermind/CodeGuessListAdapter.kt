@@ -11,7 +11,7 @@ class CodeGuessListAdapter : RecyclerView.Adapter<CodeGuessListAdapter.ViewHolde
 
     fun addAttempt(guess: GuessResponse) {
         attempts.add(guess)
-        attempts.sortBy { it.attemptNumber }
+        attempts.sortByDescending { it.attemptNumber }
         notifyDataSetChanged()
     }
 

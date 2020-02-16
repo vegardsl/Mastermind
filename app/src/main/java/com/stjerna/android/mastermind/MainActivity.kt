@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                         is Success -> {
                             runOnUiThread {
                                 codeGuessListAdapter.addAttempt(it.value)
-                                if (it.value.isFinished) {
+                                if (it.value.finished) {
                                     Toast.makeText(this, "YOU WON!", Toast.LENGTH_LONG).show()
                                     setNoGameState()
                                 }

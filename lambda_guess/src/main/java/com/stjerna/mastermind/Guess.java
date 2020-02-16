@@ -43,10 +43,10 @@ public class Guess implements RequestHandler<GuessRequest, LambdaResponse> {
 }
 
 class GuessResponse implements LambdaResponse {
-    String guess;
-    String correctColors;
-    String correctPositions;
-    boolean isFinished;
+    private String guess;
+    private String correctColors;
+    private String correctPositions;
+    private boolean isFinished;
     private int attemptNumber;
 
     public String getCorrectColors() {
