@@ -46,6 +46,7 @@ class CodeBreakerView(context: Context, attributeSet: AttributeSet)
         }
         send_button.setOnClickListener {
             onSentListener?.invoke(code_guess_editText.text.toString())
+            code_guess_editText.text.clear()
         }
     }
 

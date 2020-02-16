@@ -6,4 +6,6 @@
 
     <color name="correctPosition">#03fc6b</color>
     <color name="correctSymbol">#fcba03</color>
+
+    <color name="offWhiteBackground">#fbfbfb</color>
 </resources>

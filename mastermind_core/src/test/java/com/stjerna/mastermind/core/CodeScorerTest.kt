@@ -75,6 +75,6 @@ internal class CodeScorerTest {
     fun avoidDuplicatePoints() {
         assertScoreIsCorrect(correctPosition = 1, correctSymbol = 1, code = "EEAB", guess = "ABBB")
         assertScoreIsCorrect(correctPosition = 1, correctSymbol = 0, code = "FEDC", guess = "ABCC")
-
+        assertScoreIsCorrect(correctPosition = 1, correctSymbol = 0, code = "AFCD", guess = "FFFF")
     }
 }

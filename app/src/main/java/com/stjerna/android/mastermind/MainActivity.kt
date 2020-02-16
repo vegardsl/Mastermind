@@ -6,11 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.stjerna.android.mastermind.cloud.APIProvider
 import com.stjerna.mastermind.core.Failure
 import com.stjerna.mastermind.core.Success
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,14 +31,15 @@ class MainActivity : AppCompatActivity() {
 
         new_game_button.setOnClickListener {
             repository.newGame {
-                when(it) {
+                when (it) {
                     is Success -> {
                         runOnUiThread { setInGameState(it) }
                     }
                     is Failure -> Toast.makeText(
                         this,
                         "Failed to start new game.",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -48,16 +47,21 @@ class MainActivity : AppCompatActivity() {
         code_breaker_view.setOnSendListener {
             gameID?.let { nonNullGameID ->
                 repository.makeGuess(nonNullGameID, it) {
-                    when(it) {
+                    when (it) {
                         is Success -> {
-                           runOnUiThread {
-                               codeGuessListAdapter.addAttempt(it.value)
-                           }
+                            runOnUiThread {
+                                codeGuessListAdapter.addAttempt(it.value)
+                                if (it.value.isFinished) {
+                                    Toast.makeText(this, "YOU WON!", Toast.LENGTH_LONG).show()
+                                    setNoGameState()
+                                }
+                            }
                         }
                         is Failure -> Toast.makeText(
                             this,
                             "Failed to make guess.",
-                            Toast.LENGTH_SHORT).show()
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -69,5 +73,12 @@ class MainActivity : AppCompatActivity() {
         new_game_button.visibility = View.GONE
         code_breaker_view.visibility = View.VISIBLE
         code_guess_list.visibility = View.VISIBLE
+    }
+
+    private fun setNoGameState() {
+        gameID = null
+        new_game_button.visibility = View.VISIBLE
+        code_breaker_view.visibility = View.GONE
+        code_guess_list.visibility = View.GONE
     }
 }
