@@ -11,8 +11,8 @@ class CodeGuessListAdapter : RecyclerView.Adapter<CodeGuessListAdapter.ViewHolde
 
     fun addAttempt(guess: GuessResponse) {
         attempts.add(guess)
-        attempts.sortByDescending { it.attemptNumber }
-        notifyDataSetChanged()
+        attempts.sortBy { it.attemptNumber }
+        notifyItemInserted(attempts.size)
     }
 
 
@@ -36,11 +36,14 @@ class CodeGuessListAdapter : RecyclerView.Adapter<CodeGuessListAdapter.ViewHolde
         holder.update(attempts[position])
     }
 
+    fun clear() {
+        val size = attempts.size
+        attempts.clear()
+        notifyItemRangeRemoved(0, size)
+    }
+
     class ViewHolder(private val scoreView: ScoreView) : RecyclerView.ViewHolder(scoreView) {
         fun update(guessResponse: GuessResponse) {
-            val attemptNumber: Int = guessResponse.attemptNumber
-            val guess: String = guessResponse.guess
-
             scoreView.setScore(
                 Score(
                     guessResponse.correctPositions.toInt(),

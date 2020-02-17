@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
             false
         )
         code_guess_list.adapter = codeGuessListAdapter
-        codeGuessListAdapter.notifyDataSetChanged()
 
         new_game_button.setOnClickListener {
             repository.newGame {
@@ -51,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                         is Success -> {
                             runOnUiThread {
                                 codeGuessListAdapter.addAttempt(it.value)
+                                code_guess_list.scrollToPosition(codeGuessListAdapter.itemCount - 1)
                                 if (it.value.finished) {
                                     Toast.makeText(this, "YOU WON!", Toast.LENGTH_LONG).show()
                                     setNoGameState()
@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setInGameState(it: Success<GameID>) {
         gameID = it.value
+        codeGuessListAdapter.clear()
         new_game_button.visibility = View.GONE
         code_breaker_view.visibility = View.VISIBLE
         code_guess_list.visibility = View.VISIBLE
@@ -77,6 +78,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setNoGameState() {
         gameID = null
+        codeGuessListAdapter.clear()
+        code_guess_list.recycledViewPool.clear()
+        codeGuessListAdapter.notifyDataSetChanged()
         new_game_button.visibility = View.VISIBLE
         code_breaker_view.visibility = View.GONE
         code_guess_list.visibility = View.GONE

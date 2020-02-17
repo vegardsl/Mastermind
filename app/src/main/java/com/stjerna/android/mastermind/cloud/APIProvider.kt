@@ -16,7 +16,7 @@ object APIProvider {
     private val okhttp: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(
             MyInterceptor(BuildConfig.apiBaseUrl, BuildConfig.apiKey)
-        ).callTimeout(15, TimeUnit.SECONDS).build()
+        ).callTimeout(20, TimeUnit.SECONDS).build()
 
     fun api(): MastermindApi = Retrofit.Builder()
         .baseUrl(BuildConfig.apiBaseUrl)
